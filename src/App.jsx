@@ -1,37 +1,20 @@
-import { useEffect, useState } from "react";
-import { io } from "socket.io-client";
-
-const socket = io("http://192.168.88.34:5000"); // Connect to backend
-
-function App() {
-  const [message, setMessage] = useState("");
-
-  useEffect(() => {
-    // Listen for welcome message
-    socket.on("welcome", (data) => {
-      console.log(data);
-      setMessage(data);
-    });
-
-    // Cleanup listener on unmount
-    return () => {
-      socket.off("welcome");
-    };
-  }, []);
-
-  // Example: Send message to server
-  const sendMessage = () => {
-    socket.emit("message", "Hi server, this is Jeremiah 😎");
-  };
-
+import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
+import Home from "./pages/Home";
+import Login from "./components/UI/Login";
+import Register from "./components/UI/Register";
+import LandingPage from "./pages/LandingPage";
+export default function App() {
   return (
-    <div style={{ textAlign: "center", marginTop: "50px" }}>
-      <h2>React + Socket.IO 🔌</h2>
-      <p>Server says: {message}</p>
-
-      <button onClick={sendMessage}>Send Message</button>
+    <div>
+      <Router>
+        <Routes>
+          <Route path="/" element={<LandingPage />} />
+          <Route path="/landing-page" element={<LandingPage />} />
+          <Route path="/home" element={<Home />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
+        </Routes>
+      </Router>
     </div>
   );
 }
-
-export default App;
